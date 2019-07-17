@@ -46,9 +46,9 @@ public class AResStrategy extends AbstractStrategy {
         largeActiveCount = Constants.longAdderLarge.longValue();
 
 
-        double k1 = Math.log(rand.nextDouble()) * (smallActiveCount / (smallActiveTime + 35.0) * 1000);
-        double k2 = Math.log(rand.nextDouble()) * (mediumActiveCount / (mediumActiveTime + 30.0) * 1000);
-        double k3 = Math.log(rand.nextDouble()) * (largeActiveCount / (largeActiveTime + 25.0) * 1000);
+        double k1 = rand.nextDouble() * (smallActiveCount / (smallActiveTime + 35.0) * 1000);
+        double k2 = rand.nextDouble() * (mediumActiveCount / (mediumActiveTime + 30.0) * 1000);
+        double k3 = rand.nextDouble() * (largeActiveCount / (largeActiveTime + 25.0) * 1000);
 
         double result = Math.max(k1, Math.max(k1, k2));
 

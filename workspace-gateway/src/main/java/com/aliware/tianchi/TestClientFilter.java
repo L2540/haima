@@ -61,13 +61,16 @@ public class TestClientFilter implements Filter {
         Long startTime = Long.valueOf(attachments.get("hello"));
         Long endTime = new Date().getTime();
         if (port == 20880) {
-            System.out.println("small:" + (endTime - startTime));
+//            System.out.println("small:" + (endTime - startTime));
+            lastSmall = endTime - startTime;
             longAdderSmall.increment();
         } else if (port == 20870) {
-            System.out.println("medium:" + (endTime - startTime));
+//            System.out.println("medium:" + (endTime - startTime));
+            lastMedium = endTime - startTime;
             longAdderMedium.increment();
         } else {
-            System.out.println("large:" + (endTime - startTime));
+//            System.out.println("large:" + (endTime - startTime));
+            lastLarge = endTime - startTime;
             longAdderLarge.increment();
         }
 

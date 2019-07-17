@@ -48,7 +48,7 @@ public class TestServerFilter implements Filter {
             }
             init=true;
         }
-        System.out.println(result.getValue());
+//        System.out.println(result.getValue());
         return result;
     }
 
