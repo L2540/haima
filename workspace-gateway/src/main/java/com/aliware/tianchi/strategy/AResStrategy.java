@@ -31,29 +31,26 @@ public class AResStrategy extends AbstractStrategy {
 
     @Override
     public int select(URL url, Invocation invocation) {
-        int smallActiveCount;
-        int mediumActiveCount;
-        int largeActiveCount;
+        long smallActiveCount;
+        long mediumActiveCount;
+        long largeActiveCount;
+        long smallActiveTime;
+        long mediumActiveTime;
+        long largeActiveTime;
+        smallActiveTime = Constants.lastSmall.longValue();
+        mediumActiveTime = Constants.lastMedium.longValue();
+        largeActiveTime = Constants.lastLarge.longValue();
 
-        if (dataFrom.equals("client")) {
-            smallActiveCount = (int) Constants.longAdderSmall.longValue();
-            mediumActiveCount = (int) Constants.longAdderMedium.longValue();
-            largeActiveCount = (int) Constants.longAdderLarge.longValue();
-        } else {
-            smallActiveCount = Constants.activeThreadCount.get("small");
-            mediumActiveCount = Constants.activeThreadCount.get("medium");
-            largeActiveCount = Constants.activeThreadCount.get("large");
-        }
+        smallActiveCount = Constants.longAdderSmall.longValue();
+        mediumActiveCount = Constants.longAdderMedium.longValue();
+        largeActiveCount = Constants.longAdderLarge.longValue();
 
-        PriorityQueue<Double> queue = new PriorityQueue<>((o1, o2) -> o2.compareTo(o1));
-        double k1 = Math.log(rand.nextDouble()) / (smallActiveCount * 1);
-        queue.offer(k1);
-        double k2 = Math.log(rand.nextDouble()) / (mediumActiveCount * 1.5);
-        queue.offer(k2);
-        double k3 = Math.log(rand.nextDouble()) / (largeActiveCount * 2);
-        queue.offer(k3);
 
-        double result = queue.poll();
+        double k1 = Math.log(rand.nextDouble()) * (smallActiveCount / (smallActiveTime + 35.0) * 1000);
+        double k2 = Math.log(rand.nextDouble()) * (mediumActiveCount / (mediumActiveTime + 30.0) * 1000);
+        double k3 = Math.log(rand.nextDouble()) * (largeActiveCount / (largeActiveTime + 25.0) * 1000);
+
+        double result = Math.max(k1, Math.max(k1, k2));
 
         if (result == k1) {
             return 0;

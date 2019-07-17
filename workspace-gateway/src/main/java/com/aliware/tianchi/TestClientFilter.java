@@ -42,9 +42,7 @@ public class TestClientFilter implements Filter {
 //                LOGGER.info(new Date().getTime() + ":large:" + (com.aliware.tianchi.Constants.activeThreadCount.get("large") + ":" + com.aliware.tianchi.Constants.longAdderLarge.longValue()));
             }
             Map<String, String> attachments = invocation.getAttachments();
-            String value = UUID.randomUUID().toString();
-            attachments.put("hello", value);
-            com.aliware.tianchi.Constants.concurrentHashMap.put(value, new Date().getTime());
+            attachments.put("hello", String.valueOf(new Date().getTime()));
             Result result = invoker.invoke(invocation);
             return result;
         } catch (Exception e) {
@@ -60,19 +58,15 @@ public class TestClientFilter implements Filter {
         URL url = invoker.getUrl();
         int port = url.getPort();
         Map<String, String> attachments = invocation.getAttachments();
-        String value = attachments.get("hello");
-        Long startTime = concurrentHashMap.get(value);
+        Long startTime = Long.valueOf(attachments.get("hello"));
         Long endTime = new Date().getTime();
         if (port == 20880) {
-            linkedHashMapSmall.put(value, endTime - startTime);
             System.out.println("small:" + (endTime - startTime));
             longAdderSmall.increment();
         } else if (port == 20870) {
-            linkedHashMapMedium.put(value, endTime - startTime);
             System.out.println("medium:" + (endTime - startTime));
             longAdderMedium.increment();
         } else {
-            linkedHashMapLarge.put(value, endTime - startTime);
             System.out.println("large:" + (endTime - startTime));
             longAdderLarge.increment();
         }
